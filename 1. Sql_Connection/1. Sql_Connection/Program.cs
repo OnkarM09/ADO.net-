@@ -15,15 +15,33 @@ namespace _1._Sql_Connection
 
             string connectionString = "Data Source=LAPTOP-01OFR6OL; Initial Catalog=ado_db; Integrated Security=true; Encrypt=false;";
 
-            SqlConnection connection = new SqlConnection(connectionString);
-
-            connection.Open();
-            if (connection.State == ConnectionState.Open)
+            //SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection? connection = null;
+            try
             {
-                Console.WriteLine("Connection is open");
+
+                //Using block (Automatic closse the connection)
+                using (connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        Console.WriteLine("Connection is open");
+                    }
+                }
             }
-            connection.Close();
-            Console.WriteLine("Connection is closed now");
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                connection?.Close();
+                Console.WriteLine("Connection is closed now");
+            }
+
+
         }
     }
 }
