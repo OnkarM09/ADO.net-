@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Data;
 using System.Data;
 
 namespace _3._DataAdapterDemo
