@@ -72,22 +72,29 @@ namespace _1._Sql_Connection
                     //SqlCommand cmd  = UdpateTableValues(connection, false); //false for add operation
 
                     //Update the db values
-                    SqlCommand cmd = UdpateTableValues(connection);
+                    //SqlCommand cmd = UdpateTableValues(connection);
 
                     //Delete the db values
                     //SqlCommand cmd = DeleteTableRow(connection);
 
-                    connection.Open(); //Open the connection
-                    int rowsAffected = cmd.ExecuteNonQuery();  //Return the number of rows affected
 
-                    if (rowsAffected > 0)
-                    {
-                        Console.WriteLine("Data inserted successfully");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Data insertion failed");
-                    }
+                    //Using aggregate function
+                    SqlCommand cmd = GetMaxSalary(connection);
+
+
+                    connection.Open(); //Open the connection
+                    //int rowsAffected = cmd.ExecuteNonQuery();  //Return the number of rows affected
+
+                    int maxSalary = (int)cmd.ExecuteScalar(); //ExecuteScalar returns the first column of the first row in the result set
+                    Console.WriteLine("Max Salary: " + maxSalary);
+                    //if (rowsAffected > 0)
+                    //{
+                    //    Console.WriteLine("Data inserted successfully");
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("Data insertion failed");
+                    //}
                 }
             }
             catch (SqlException ex)
@@ -139,6 +146,13 @@ namespace _1._Sql_Connection
             string query = "delete from test_employee_table where id = @id";
             SqlCommand cmd = new SqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@id", id);
+            return cmd;
+        }
+
+        public static SqlCommand GetMaxSalary(SqlConnection connection) {
+            //using max() aggregate function 
+            string query = "select max(salary) from test_employee_table";
+            SqlCommand cmd = new SqlCommand(query, connection);
             return cmd;
         }
 
