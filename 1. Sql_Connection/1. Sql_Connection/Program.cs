@@ -21,9 +21,13 @@ namespace _1._Sql_Connection
 
                 //Using block (Automatic closse the connection)
                 using (connection = new SqlConnection(connectionString))
-                {
-                    string query = "select * from test_employee_table";
-                    SqlCommand cmd = new SqlCommand(query, connection);
+                { 
+                    string query = "spGetEthanHunt";  //Stored Procedure (spGetEthanHunt, spGetEmployees)
+                    //SqlCommand cmd = new SqlCommand(query, connection);
+                    SqlCommand cmd = new SqlCommand(); //Create a new command object without constructor params
+                    cmd.CommandText = query; //Set the command text
+                    cmd.Connection = connection; //Set the connection for the command
+                    cmd.CommandType = CommandType.StoredProcedure; //Set the command type to StoredProcedure
 
                     connection.Open(); //Open the connection
 
